@@ -89,19 +89,19 @@ def pytest_cmdline_parse():
     config = outcome.get_result()
     if config.option.debug:
         path = os.path.abspath("pytestdebug.log")
-        debugfile = open(path, "w")
-        debugfile.write(
-            "versions pytest-%s, py-%s, "
-            "python-%s\ncwd=%s\nargs=%s\n\n"
-            % (
-                pytest.__version__,
-                py.__version__,
-                ".".join(map(str, sys.version_info)),
-                os.getcwd(),
-                config.invocation_params.args,
+        with open(path, "w") as debugfile:
+            debugfile.write(
+                "versions pytest-%s, py-%s, "
+                "python-%s\ncwd=%s\nargs=%s\n\n"
+                % (
+                    pytest.__version__,
+                    py.__version__,
+                    ".".join(map(str, sys.version_info)),
+                    os.getcwd(),
+                    config.invocation_params.args,
+                )
             )
-        )
-        config.trace.root.setwriter(debugfile.write)
+            config.trace.root.setwriter(debugfile.write)
         undo_tracing = config.pluginmanager.enable_tracing()
         sys.stderr.write("writing pytestdebug information to %s\n" % path)
 
