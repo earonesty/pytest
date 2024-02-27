@@ -11,7 +11,7 @@ def get_issues():
     url = issues_url
     while 1:
         get_data = {"state": "all"}
-        r = requests.get(url, params=get_data)
+        r = requests.get(url, params=get_data, timeout=60)
         data = r.json()
         if r.status_code == 403:
             # API request limit exceeded
