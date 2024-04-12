@@ -12,6 +12,7 @@ from _pytest import outcomes
 from _pytest import reports
 from _pytest import runner
 from _pytest.outcomes import OutcomeException
+from security import safe_command
 
 
 class TestSetupState:
@@ -789,7 +790,7 @@ def test_pytest_cmdline_main(testdir):
     )
     import subprocess
 
-    popen = subprocess.Popen([sys.executable, str(p)], stdout=subprocess.PIPE)
+    popen = safe_command.run(subprocess.Popen, [sys.executable, str(p)], stdout=subprocess.PIPE)
     popen.communicate()
     ret = popen.wait()
     assert ret == 0

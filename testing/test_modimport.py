@@ -5,6 +5,7 @@ import py
 
 import _pytest
 import pytest
+from security import safe_command
 
 pytestmark = pytest.mark.slow
 
@@ -21,8 +22,7 @@ def test_fileimport(modfile):
     # without needing the pytest namespace being set
     # this is critical for the initialization of xdist
 
-    p = subprocess.Popen(
-        [
+    p = safe_command.run(subprocess.Popen, [
             sys.executable,
             "-c",
             "import sys, py; py.path.local(sys.argv[1]).pyimport()",
