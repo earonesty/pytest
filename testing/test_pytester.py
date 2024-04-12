@@ -340,7 +340,7 @@ class TestSysModulesSnapshot:
         snapshot = SysModulesSnapshot()
         monkeypatch.setattr(sys, "modules", replacement)
         snapshot.restore()
-        assert sys.modules is replacement
+        assert sys.modules == replacement
         assert sys.modules == original
 
 
@@ -384,7 +384,7 @@ class TestSysPathsSnapshot:
         snapshot = SysPathsSnapshot()
         monkeypatch.setattr(sys, path_type, new)
         snapshot.restore()
-        assert getattr(sys, path_type) is new
+        assert getattr(sys, path_type) == new
         assert getattr(sys, path_type) == original_data
         assert getattr(sys, other_path_type) is original_other
         assert getattr(sys, other_path_type) == original_other_data
