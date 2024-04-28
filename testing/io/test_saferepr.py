@@ -67,7 +67,7 @@ def test_baseexception():
                 self.exc_type = self.exc_types.pop(0)
             except IndexError:
                 pass
-            if hasattr(self.exc_type, "__call__"):
+            if callable(self.exc_type):
                 raise self.exc_type(*args)
             raise self.exc_type
 

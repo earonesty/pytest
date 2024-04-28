@@ -1121,7 +1121,7 @@ def getrawcode(obj, trycall: bool = True):
         obj = getattr(obj, "f_code", obj)
         obj = getattr(obj, "__code__", obj)
         if trycall and not hasattr(obj, "co_firstlineno"):
-            if hasattr(obj, "__call__") and not inspect.isclass(obj):
+            if callable(obj) and not inspect.isclass(obj):
                 x = getrawcode(obj.__call__, trycall=False)
                 if hasattr(x, "co_firstlineno"):
                     return x
