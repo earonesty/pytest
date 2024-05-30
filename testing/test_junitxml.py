@@ -1,7 +1,6 @@
 import os
 import platform
 from datetime import datetime
-from xml.dom import minidom
 
 import py
 import xmlschema
@@ -10,6 +9,7 @@ import pytest
 from _pytest.junitxml import LogXML
 from _pytest.pathlib import Path
 from _pytest.reports import BaseReport
+import defusedxml.minidom
 
 
 @pytest.fixture(scope="session")
@@ -38,7 +38,7 @@ def run_and_parse(testdir, schema):
         if family == "xunit2":
             with xml_path.open() as f:
                 schema.validate(f)
-        xmldoc = minidom.parse(str(xml_path))
+        xmldoc = defusedxml.minidom.parse(str(xml_path))
         return result, DomNode(xmldoc)
 
     return run
@@ -1305,7 +1305,7 @@ def test_global_properties(testdir, xunit_family):
     log.add_global_property("bar", 2)
     log.pytest_sessionfinish()
 
-    dom = minidom.parse(str(path))
+    dom = defusedxml.minidom.parse(str(path))
 
     properties = dom.getElementsByTagName("properties")
 
@@ -1345,7 +1345,7 @@ def test_url_property(testdir):
     node_reporter.append_failure(test_report)
     log.pytest_sessionfinish()
 
-    test_case = minidom.parse(str(path)).getElementsByTagName("testcase")[0]
+    test_case = defusedxml.minidom.parse(str(path)).getElementsByTagName("testcase")[0]
 
     assert (
         test_case.getAttribute("url") == test_url
