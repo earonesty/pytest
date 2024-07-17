@@ -34,6 +34,7 @@ from _pytest.main import Session
 from _pytest.monkeypatch import MonkeyPatch
 from _pytest.pathlib import Path
 from _pytest.reports import TestReport
+from security import safe_command
 
 if False:  # TYPE_CHECKING
     from typing import Type
@@ -1101,7 +1102,7 @@ class Testdir:
         else:
             kw["stdin"] = stdin
 
-        popen = subprocess.Popen(cmdargs, stdout=stdout, stderr=stderr, **kw)
+        popen = safe_command.run(subprocess.Popen, cmdargs, stdout=stdout, stderr=stderr, **kw)
         if stdin is Testdir.CLOSE_STDIN:
             popen.stdin.close()
         elif isinstance(stdin, bytes):
